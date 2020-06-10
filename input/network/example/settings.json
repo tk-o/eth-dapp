@@ -1,0 +1,5 @@
+{
+  "rpcServerUrl": "http://127.0.0.1:7545",
+  "sendingAccount": "0xreplace0with0senders0address",
+  "receivingAccount": "0xreplace0with0receiving0address"
+}

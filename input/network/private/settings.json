@@ -1,0 +1,5 @@
+{
+  "rpcServerUrl": "http://127.0.0.1:7545",
+  "sendingAccount": "0xa88264D581aAc5B8B00a9b92436e9109d74B8551",
+  "receivingAccount": "0xa6FFAE7739604088D738CbD42CA1E4429813E5F8"
+}
