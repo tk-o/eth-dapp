@@ -6,7 +6,7 @@ async function createTransaction({
   privateKeySender,
   sendingAccount,
   receivingAccount,
-  value = Web3.utils.toHex(Web3.utils.toWei('0.1', 'ether')),
+  value = Web3.utils.toHex(Web3.utils.toWei('0.01', 'ether')),
   gasLimit = Web3.utils.toHex(21000),
   gasPrice = Web3.utils.toHex(Web3.utils.toWei('10', 'gwei'))
 }) {
@@ -20,11 +20,15 @@ async function createTransaction({
   // 3. Create a raw transaction
   const rawTx = {
     nonce: await web3.eth.getTransactionCount(sendingAccount),
+    from: sendingAccount,
     to: receivingAccount,
-    gasPrice,
+    gasPrice,//: Buffer.from(await web3.eth.getGasPrice(), 'hex'),
     gasLimit,
     value,
+    chainId: Web3.utils.toHex(await web3.eth.getChainId()),
   };
+
+  console.log({rawTx});
 
   const networkType =  await web3.eth.net.getNetworkType();
   const privateKeySenderBuffer = Buffer.from(privateKeySender, 'hex');
@@ -32,7 +36,6 @@ async function createTransaction({
 
   if (networkType !== 'private') {
     txConfig.chain = networkType;
-    txConfig.hardfork = 'constantinople';
   }
 
   const tx = new EthereumTx(rawTx, txConfig);
@@ -40,11 +43,12 @@ async function createTransaction({
   const serializedTx = tx.serialize();
 
   return async function sendTransaction() {
-    console.log('sending tx', { tx, networkType });
-    web3.eth.sendSignedTransaction(serializedTx)
-      .on('receipt', console.log)
-      .on('error', console.log)
-
+    try {
+      const newTx = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+      console.log(`New TX URL: https://${networkType}.etherscan.io/tx/${newTx.transactionHash}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
 

@@ -8,7 +8,7 @@ yarn
 ## Configuration
 To run the dAPP, please add a network profile. Feel free to duplicate the `input/network/example` profile. You can quickly do it by running:
 ```
-cp ./input/network/example input/network/ropsten
+cp -r ./input/network/example ./input/network/ropsten
 ```
 And then modifying the JSON files accordingly.
 

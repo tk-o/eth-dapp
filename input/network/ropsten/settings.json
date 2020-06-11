@@ -1,0 +1,5 @@
+{
+  "rpcServerUrl": "https://ropsten.infura.io/v3/a94750433bc5422f9d41236aa73f4089",
+  "sendingAccount": "0xdb34020eAA7f1B94a492b3f2c5427F541925ff36",
+  "receivingAccount": "0x1e8f7cF82326da8A7872a2989fA505792b38f096"
+}
