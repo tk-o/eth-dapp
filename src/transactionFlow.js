@@ -44,7 +44,9 @@ async function createTransaction({
 
   return async function sendTransaction() {
     try {
-      const newTx = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+      const newTx = await web3.eth.sendSignedTransaction(
+        web3.utils.toHex(serializedTx)
+      );
       console.log(`New TX URL: https://${networkType}.etherscan.io/tx/${newTx.transactionHash}`);
     } catch (error) {
       console.error(error);
