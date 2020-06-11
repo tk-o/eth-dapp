@@ -20,12 +20,10 @@ async function createTransaction({
   // 3. Create a raw transaction
   const rawTx = {
     nonce: await web3.eth.getTransactionCount(sendingAccount),
-    from: sendingAccount,
     to: receivingAccount,
-    gasPrice,//: Buffer.from(await web3.eth.getGasPrice(), 'hex'),
+    gasPrice: web3.utils.toHex(await web3.eth.getGasPrice()),
     gasLimit,
     value,
-    chainId: Web3.utils.toHex(await web3.eth.getChainId()),
   };
 
   console.log({rawTx});
@@ -48,6 +46,10 @@ async function createTransaction({
         web3.utils.toHex(serializedTx)
       );
       console.log(`New TX URL: https://${networkType}.etherscan.io/tx/${newTx.transactionHash}`);
+      const sendingAccountBalance = await web3.eth.getBalance(sendingAccount);
+      const receivingAccountBalance = await web3.eth.getBalance(receivingAccount);
+    
+      console.log({ sendingAccountBalance, sendingAccount, receivingAccountBalance, receivingAccount });
     } catch (error) {
       console.error(error);
     }
