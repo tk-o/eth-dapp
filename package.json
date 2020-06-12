@@ -1,10 +1,15 @@
 {
+  "name": "eth-dapp",
+  "scripts": {
+    "postinstall": "lerna bootstrap"
+  },
   "dependencies": {
     "ethereumjs-tx": "^2.1.2",
     "web3": "^1.2.8"
   },
   "devDependencies": {
     "@types/web3": "^1.2.2",
+    "lerna": "^3.22.1",
     "tsdx": "^0.13.2"
   }
 }

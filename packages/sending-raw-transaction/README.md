@@ -1,4 +1,9 @@
-# TKOs dAPP
+# dAPP — sending a raw transaction to the network
+
+This example has been tested with the following networks:
+- private (local blockchain powered by Ganache),
+- ropsten (testnet),
+- rinkeby (testnet).
 
 ## Installation
 ```
