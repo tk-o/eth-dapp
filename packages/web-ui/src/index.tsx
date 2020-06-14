@@ -16,9 +16,11 @@ export function Shell() {
   const [alertMessage, setAlertMessage] = React.useState<string | null>(null);
   const [account, setAccount] = React.useState<string | null>(null);
   const [balance, setBalance] = React.useState<string | null>(null);
+  const [contractInput, setContractInput] = React.useState<string | null>(null);
   const [contractOutput, setContractOutput] = React.useState<string | null>(
     null
   );
+  const contractAddress = '0x8B76497CF3558E62b4a647423533f76E7C1c34Bd';
 
   React.useEffect(() => {
     async function getData() {
@@ -58,7 +60,7 @@ export function Shell() {
             type: 'function',
           },
         ],
-        '0x4b213d6d8B4108282F19dbfB7daeA7F2Fb7FFfcB'
+        contractAddress
       );
 
       setContractOutput(await remixContract.methods.retreive().call());
@@ -104,12 +106,52 @@ export function Shell() {
       {alertMessage !== null ? <div>{alertMessage}</div> : null}
       <h2>{balance} ETH</h2>
       <button onClick={() => sendTransaction()}>Send transaction</button>
-      {contractOutput !== null ? (
-        <section>
-          <h2>Contract output</h2>
-          <output>{contractOutput}</output>
-        </section>
-      ) : null}
+      <form
+        onSubmit={async event => {
+          event.preventDefault();
+          const remixContract = new web3.eth.Contract(
+            [
+              {
+                inputs: [],
+                name: 'retreive',
+                outputs: [
+                  { internalType: 'uint256', name: '', type: 'uint256' },
+                ],
+                stateMutability: 'view',
+                type: 'function',
+              },
+              {
+                inputs: [
+                  { internalType: 'uint256', name: 'num', type: 'uint256' },
+                ],
+                name: 'store',
+                outputs: [],
+                stateMutability: 'nonpayable',
+                type: 'function',
+              },
+            ],
+            contractAddress,
+            {
+              from: account!,
+              gasPrice: web3.utils.toHex(await web3.eth.getGasPrice()),
+            }
+          );
+
+          console.log({
+            store: await remixContract.methods.store(contractInput).send(),
+          });
+        }}
+      >
+        <h2>Contract output</h2>
+        <input
+          type="number"
+          onChange={event => setContractInput(event.target.value)}
+          placeholder="Set the number to store on the contract storage"
+        />
+        <button type="submit">Save the number</button>
+        <hr />
+        <output>{contractOutput}</output>
+      </form>
     </main>
   );
 }
